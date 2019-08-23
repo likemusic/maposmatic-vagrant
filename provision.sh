@@ -16,6 +16,8 @@ else
 fi
 
 mkdir -p $CACHEDIR
+chmod a+w $CACHEDIR
+exit
 
 #----------------------------------------------------
 #
