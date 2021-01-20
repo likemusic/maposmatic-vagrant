@@ -67,7 +67,7 @@ then
     systemctl start osm2pgsql-update.timer
 else
     # fallback: take timestamp from actual file contents
-    REPLICATION_TIMESTAMP=$(osmium fileinfo -e -g date.timestamp.last $OSM_EXTRACT)
+    REPLICATION_TIMESTAMP=$(osmium fileinfo -e -g metadata.all_objects.timestamp $OSM_EXTRACT)
 fi
 
 sudo -u maposmatic psql gis -c "update maposmatic_admin set last_update='$REPLICATION_TIMESTAMP'"
