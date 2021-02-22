@@ -43,6 +43,7 @@ SELECT osm_id
 , tags->'harbour' AS "harbour"
 , tags->'height' AS "height"
 , tags->'highway' as "highway"
+, tags->'hiking' as "hiking"
 , tags->'historic' as "historic"
 , tags->'iata' as "iata"
 , tags->'industrial' as "industrial"

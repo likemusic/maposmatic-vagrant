@@ -54,7 +54,7 @@ done
 REPLICATION_BASE_URL=$(osmium fileinfo -g 'header.option.osmosis_replication_base_url' "${OSM_EXTRACT}")
 if ! test -z "$REPLICATION_BASE_URL"
 then
-    REPLICATION_SEQUENCE_NUMBER=$(osmium fileinfo -g 'header.option.osmosis_replication_sequence_number' ${OSM_EXTRACT})
+    REPLICATION_SEQUENCE_NUMBER=$(pyosmium-get-changes --start-osm-data ${OSM_EXTRACT})
     REPLICATION_TIMESTAMP=$(osmium fileinfo -g 'header.option.osmosis_replication_timestamp' ${OSM_EXTRACT})
 
     echo -n $REPLICATION_BASE_URL > replication_url
@@ -65,7 +65,10 @@ then
     systemctl daemon-reload
     systemctl enable osm2pgsql-update.timer
     systemctl start osm2pgsql-update.timer
-else
+fi
+
+if test -z "$REPLICATION_TIMESTAMP"
+then
     # fallback: take timestamp from actual file contents
     REPLICATION_TIMESTAMP=$(osmium fileinfo -e -g metadata.all_objects.timestamp $OSM_EXTRACT)
 fi
