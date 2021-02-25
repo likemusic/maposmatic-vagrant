@@ -128,7 +128,7 @@ banner "building osm2pgsql"
 banner "building phyghtmap" # needed by OpenTopoMap
 . $INCDIR/from-source/phyghtmap.sh
 
-banner "db import" 
+banner "db import"
 . $INCDIR/osm2pgsql-import.sh
 
 banner "get bounds"
@@ -145,7 +145,7 @@ banner "locales"
 
 #----------------------------------------------------
 #
-# Set up various stylesheets 
+# Set up various stylesheets
 #
 #----------------------------------------------------
 

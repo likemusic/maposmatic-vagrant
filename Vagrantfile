@@ -50,9 +50,11 @@ Vagrant.configure(2) do |config|
 
       "MAPOSMATIC_FORK_URL": ENV.fetch("MAPOSMATIC_FORK_URL", "https://github.com/hholzgra/maposmatic"),
       "MAPOSMATIC_FORK_GIT": ENV.fetch("MAPOSMATIC_FORK_URL", "https://github.com/hholzgra/maposmatic.git"),
+      "MAPOSMATIC_FORK_BRANCH": ENV.fetch("MAPOSMATIC_FORK_BRANCH", nil),
 
       "OCITYSMAP_FORK_URL": ENV.fetch("OCITYSMAP_FORK_URL", "https://githib.com/hholzgra/ocitysmap"),
       "OCITYSMAP_FORK_GIT": ENV.fetch("OCITYSMAP_FORK_URL", "https://github.com/hholzgra/ocitysmap.git"),
+      "OCITYSMAP_FORK_BRANCH": ENV.fetch("OCITYSMAP_FORK_BRANCH", nil),
     },
     path: "provision.sh"
 

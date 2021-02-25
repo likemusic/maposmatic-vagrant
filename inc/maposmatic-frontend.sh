@@ -6,7 +6,14 @@
 
 # get maposmatic web frontend
 cd /home/maposmatic
-git clone --quiet ${MAPOSMATIC_FORK_GIT}
+
+if [[ -z "${MAPOSMATIC_FORK_BRANCH}" ]];
+  then
+    git clone --quiet --branch ${MAPOSMATIC_FORK_BRANCH} ${MAPOSMATIC_FORK_GIT}
+  else
+    git clone --quiet ${MAPOSMATIC_FORK_GIT}
+fi
+
 cd maposmatic
 git checkout --quiet site-osm-baustelle
 
