@@ -19,7 +19,7 @@ mkdir -p logs rendering/results media
 
 # copy config files
 cp $FILEDIR/config-files/config.py scripts/config.py
-cp $FILEDIR/config-files/settings_local.py www/settings_local.py
+cat $FILEDIR/config-files/settings_local.py | envsubst > www/settings_local.py
 cp $FILEDIR/config-files/maposmatic.wsgi www/maposmatic.wsgi
 
 # copy static files from django applications
