@@ -7,8 +7,8 @@
 # config tweaks
 # TODO how to auto-detect correct conf include dir?
 # Keep for OS some free memory to prevent killing PostgreSQL by Out-Of-Memory Killer
-let Mem_OS = 100000
-let Mem_DB = $MemTotal - Mem_OS
+let Mem_OS=100000
+let Mem_DB=$MemTotal-$Mem_OS
 let Mem_1_3=$Mem_DB/3
 let Mem_2_3=2*$Mem_DB/3
 sed -e"s/#Mem_1_3#/$Mem_1_3/g" -e"s/#Mem_2_3#/$Mem_2_3/g" </vagrant/files/config-files/postgresql-extra.conf >/etc/postgresql/12/main/conf.d/postgresql-extra.conf
