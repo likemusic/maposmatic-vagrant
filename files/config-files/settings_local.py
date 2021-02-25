@@ -132,6 +132,14 @@ OUTER_BOUNDS_JSON = False
 # # BBOX_MAXIMUM_LENGTH_IN_KM in osm_map.js too.
 BBOX_MAXIMUM_LENGTH_IN_METERS = 20000
 
+# Paper min/max width/height in mm.
+PAPER_MIN_WITH_MM = ${PAPER_MIN_WITH_MM}
+PAPER_MAX_WITH_MM = ${PAPER_MAX_WITH_MM}
+
+PAPER_MIN_HEIGHT_MM = ${PAPER_MIN_HEIGHT_MM}
+PAPER_MAX_HEIGHT_MM = ${PAPER_MAX_HEIGHT_MM}
+
+
 # # Number of items displayed per page in the jobs and maps pages
 ITEMS_PER_PAGE = 25
 

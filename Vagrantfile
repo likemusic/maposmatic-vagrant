@@ -46,7 +46,11 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell",
     env: {
       "GIT_AUTHOR_NAME":  ENV['GIT_AUTHOR_NAME'],
-      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL']
+      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL'],
+      "PAPER_MIN_WITH_MM": ENV.fetch("PAPER_MIN_WITH_MM", 100),
+      "PAPER_MAX_WITH_MM": ENV.fetch("PAPER_MAX_WITH_MM", 2000),
+      "PAPER_MIN_HEIGHT_MM": ENV.fetch("PAPER_MIN_HEIGHT_MM", 100),
+      "PAPER_MAX_HEIGHT_MM": ENV.fetch("PAPER_MAX_HEIGHT_MM", 2000),
     },
     path: "provision.sh"
 
