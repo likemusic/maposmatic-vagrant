@@ -13,8 +13,8 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb, override|
     # vb.gui = true
     vb.name = "maposmatic"
-    vb.memory = "3072"
-    vb.cpus   = "2"
+    vb.memory = ENV.fetch("VM_MEMORY", 3072)
+    vb.cpus   = ENV.fetch("VM_CPUS", 2)
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
     override.vm.synced_folder "test", "/vagrant/test", mount_options: ["dmode=777"]
