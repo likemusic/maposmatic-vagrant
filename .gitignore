@@ -1,6 +1,9 @@
 ## IDEA-based ide's config dir
 .idea
 
+## Config
+.env
+
 # Artefacts
 *.gem
 *.rbc
