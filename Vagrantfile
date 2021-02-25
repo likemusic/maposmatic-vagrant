@@ -46,7 +46,10 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell",
     env: {
       "GIT_AUTHOR_NAME":  ENV['GIT_AUTHOR_NAME'],
-      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL']
+      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL'],
+
+      "REPLACE_DNS": ENV.fetch("REPLACE_DNS", false),
+      "DNS": ENV.fetch("DNS", "8.8.8.8 8.8.4.4"),
     },
     path: "provision.sh"
 
