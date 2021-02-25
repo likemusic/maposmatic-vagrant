@@ -16,8 +16,8 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
     # vb.gui = true
     vb.name = "maposmatic"
-    vb.memory = "3072"
-    vb.cpus   = "2"
+    vb.memory = ENV.fetch("VM_MEMORY", 3072)
+    vb.cpus   = ENV.fetch("VM_CPUS", 2)
   end
 
   if Vagrant.has_plugin?("vagrant-cachier")
