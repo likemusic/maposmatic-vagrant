@@ -288,7 +288,7 @@ the project into directory `/vagrant`, put a PBF file to import there,
 and then run the master provisioning script manually:
 
 ```bash
-  git checkout https://github.com/hholzgra/maposmatic-vagrant/ /vagrant
+  git clone https://github.com/hholzgra/maposmatic-vagrant/ /vagrant
   cd /vagrant
   ... copy, symlink or download .osm.pbf file to this director ...
   bash provision.sh
