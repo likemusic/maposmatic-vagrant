@@ -63,6 +63,12 @@ Vagrant.configure(2) do |config|
       "OCITYSMAP_FORK_GIT": ENV.fetch("OCITYSMAP_FORK_URL", "https://github.com/hholzgra/ocitysmap.git"),
 
       "BBOX_MAXIMUM_LENGTH_IN_METERS": ENV.fetch("BBOX_MAXIMUM_LENGTH_IN_METERS", 20000)
+
+      "PAPER_MIN_WITH_MM": ENV.fetch("PAPER_MIN_WITH_MM", 100),
+      "PAPER_MAX_WITH_MM": ENV.fetch("PAPER_MAX_WITH_MM", 2000),
+
+      "PAPER_MIN_HEIGHT_MM": ENV.fetch("PAPER_MIN_HEIGHT_MM", 100),
+      "PAPER_MAX_HEIGHT_MM": ENV.fetch("PAPER_MAX_HEIGHT_MM", 2000),
     },
     path: "provision.sh"
 
