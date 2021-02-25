@@ -46,7 +46,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell",
     env: {
       "GIT_AUTHOR_NAME":  ENV['GIT_AUTHOR_NAME'],
-      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL']
+      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL'],
+      "BBOX_MAXIMUM_LENGTH_IN_METERS": ENV.fetch("BBOX_MAXIMUM_LENGTH_IN_METERS", 20000)
     },
     path: "provision.sh"
 

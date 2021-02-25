@@ -130,7 +130,7 @@ OUTER_BOUNDS_JSON = False
 # # checked in both directions (longitude and latitude).
 # # Note: if you change this you should probably change
 # # BBOX_MAXIMUM_LENGTH_IN_KM in osm_map.js too.
-BBOX_MAXIMUM_LENGTH_IN_METERS = 20000
+BBOX_MAXIMUM_LENGTH_IN_METERS = ${BBOX_MAXIMUM_LENGTH_IN_METERS}
 
 # # Number of items displayed per page in the jobs and maps pages
 ITEMS_PER_PAGE = 25
