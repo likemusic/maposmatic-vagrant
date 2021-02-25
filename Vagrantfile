@@ -69,6 +69,9 @@ Vagrant.configure(2) do |config|
 
       "PAPER_MIN_HEIGHT_MM": ENV.fetch("PAPER_MIN_HEIGHT_MM", 100),
       "PAPER_MAX_HEIGHT_MM": ENV.fetch("PAPER_MAX_HEIGHT_MM", 2000),
+
+      "REPLACE_DNS": ENV.fetch("REPLACE_DNS", false),
+      "DNS": ENV.fetch("DNS", "8.8.8.8 8.8.4.4"),
     },
     path: "provision.sh"
 

@@ -22,6 +22,12 @@ INCDIR=/vagrant/inc
 
 . $INCDIR/resize-part-and-fs.sh
 
+if ${REPLACE_DNS}
+then
+  . $INCDIR/replace-dns.sh
+fi
+
+
 if touch /vagrant/can_write_here
 then
 	CACHEDIR=/vagrant/cache
