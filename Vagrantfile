@@ -18,11 +18,13 @@ Vagrant.configure(2) do |config|
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
     override.vm.synced_folder "test", "/vagrant/test", mount_options: ["dmode=777"]
+    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
   end
 
   config.vm.provider "hyperv" do |h, override|
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dir_mode=777"]
     override.vm.synced_folder "test", "/vagrant/test", mount_options: ["dir_mode=777"]
+    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dir_mode=777"]
   end
 
   if Vagrant.has_plugin?("vagrant-cachier")
