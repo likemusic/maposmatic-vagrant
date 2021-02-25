@@ -6,7 +6,7 @@
 
 # install latest ocitysmap from git
 cd /home/maposmatic
-git clone --quiet https://github.com/hholzgra/ocitysmap.git
+git clone --quiet ${OCITYSMAP_FORK_GIT}
 cd ocitysmap
 
 # fetch submodules so that all icon sets are actually installed

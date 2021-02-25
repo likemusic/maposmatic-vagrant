@@ -6,7 +6,7 @@
 
 # get maposmatic web frontend
 cd /home/maposmatic
-git clone --quiet https://github.com/hholzgra/maposmatic.git
+git clone --quiet ${MAPOSMATIC_FORK_GIT}
 cd maposmatic
 git checkout --quiet site-osm-baustelle
 
@@ -67,4 +67,4 @@ systemctl start maposmatic-render.service
 service apache2 stop
 cp $FILEDIR/config-files/000-default.conf /etc/apache2/sites-available
 service apache2 start
-    
+

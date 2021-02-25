@@ -51,7 +51,13 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell",
     env: {
       "GIT_AUTHOR_NAME":  ENV['GIT_AUTHOR_NAME'],
-      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL']
+      "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL'],
+
+      "MAPOSMATIC_FORK_URL": ENV.fetch("MAPOSMATIC_FORK_URL", "https://github.com/hholzgra/maposmatic"),
+      "MAPOSMATIC_FORK_GIT": ENV.fetch("MAPOSMATIC_FORK_URL", "https://github.com/hholzgra/maposmatic.git"),
+
+      "OCITYSMAP_FORK_URL": ENV.fetch("OCITYSMAP_FORK_URL", "https://githib.com/hholzgra/ocitysmap"),
+      "OCITYSMAP_FORK_GIT": ENV.fetch("OCITYSMAP_FORK_URL", "https://github.com/hholzgra/ocitysmap.git"),
     },
     path: "provision.sh"
 
