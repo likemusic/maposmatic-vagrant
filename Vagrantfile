@@ -40,7 +40,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "forwarded_port", guest: 80, host: ENV.fetch("HOST_PORT", 8000)
 
-  config.vm.boot_timeout = ENV.fetch("VM_BOOT_TIMEOUT", 600)
+  config.vm.boot_timeout = ENV.fetch("VM_BOOT_TIMEOUT", 600).to_i
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
 
@@ -57,13 +57,13 @@ Vagrant.configure(2) do |config|
       "OCITYSMAP_FORK_GIT": ENV.fetch("OCITYSMAP_FORK_GIT", "https://github.com/hholzgra/ocitysmap.git"),
       "OCITYSMAP_FORK_BRANCH": ENV.fetch("OCITYSMAP_FORK_BRANCH", nil),
 
-      "BBOX_MAXIMUM_LENGTH_IN_METERS": ENV.fetch("BBOX_MAXIMUM_LENGTH_IN_METERS", 20000),
+      "BBOX_MAXIMUM_LENGTH_IN_METERS": ENV.fetch("BBOX_MAXIMUM_LENGTH_IN_METERS", 20000).to_i,
 
-      "PAPER_MIN_WITH_MM": ENV.fetch("PAPER_MIN_WITH_MM", 100),
-      "PAPER_MAX_WITH_MM": ENV.fetch("PAPER_MAX_WITH_MM", 2000),
+      "PAPER_MIN_WITH_MM": ENV.fetch("PAPER_MIN_WITH_MM", 100).to_i,
+      "PAPER_MAX_WITH_MM": ENV.fetch("PAPER_MAX_WITH_MM", 2000).to_i,
 
-      "PAPER_MIN_HEIGHT_MM": ENV.fetch("PAPER_MIN_HEIGHT_MM", 100),
-      "PAPER_MAX_HEIGHT_MM": ENV.fetch("PAPER_MAX_HEIGHT_MM", 2000),
+      "PAPER_MIN_HEIGHT_MM": ENV.fetch("PAPER_MIN_HEIGHT_MM", 100).to_i,
+      "PAPER_MAX_HEIGHT_MM": ENV.fetch("PAPER_MAX_HEIGHT_MM", 2000).to_i,
 
       "REPLACE_DNS": bool(ENV.fetch("REPLACE_DNS", false)),
       "DNS": ENV.fetch("DNS", "8.8.8.8 8.8.4.4"),
@@ -77,8 +77,8 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb, override|
     # vb.gui = true
     vb.name = "maposmatic"
-    vb.memory = ENV.fetch("VM_MEMORY", 3072)
-    vb.cpus   = ENV.fetch("VM_CPUS", 2)
+    vb.memory = ENV.fetch("VM_MEMORY", 3072).to_i
+    vb.cpus   = ENV.fetch("VM_CPUS", 2).to_i
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
     override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
@@ -88,9 +88,9 @@ Vagrant.configure(2) do |config|
   # *** CONFIG > PROVIDERS > Hyper-V ***
 
   config.vm.provider "hyperv" do |h, override|
-    h.memory = ENV.fetch("VM_MEMORY", 3072)
-    h.maxmemory = ENV.fetch("VM_MEMORY", 3072)
-    h.cpus = ENV.fetch("VM_CPUS", 2)
+    h.memory = ENV.fetch("VM_MEMORY", 3072).to_i
+    h.maxmemory = ENV.fetch("VM_MEMORY", 3072),to_i
+    h.cpus = ENV.fetch("VM_CPUS", 2).to_i
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dir_mode=777"]
     override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dir_mode=777"]
