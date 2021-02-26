@@ -9,9 +9,9 @@ cd /home/maposmatic
 
 if [[ -z "${MAPOSMATIC_FORK_BRANCH}" ]];
   then
-    git clone --quiet --branch ${MAPOSMATIC_FORK_BRANCH} ${MAPOSMATIC_FORK_GIT}
-  else
     git clone --quiet ${MAPOSMATIC_FORK_GIT}
+  else
+    git clone --quiet --branch ${MAPOSMATIC_FORK_BRANCH} ${MAPOSMATIC_FORK_GIT}
 fi
 
 cd maposmatic
