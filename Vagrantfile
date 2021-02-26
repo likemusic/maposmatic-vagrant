@@ -6,33 +6,7 @@ def bool(obj)
 end
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "generic/ubuntu2004"
-
-  config.vm.network "forwarded_port", guest: 80, host: 8000
-
-  config.vm.boot_timeout = 600
-  config.ssh.forward_agent = true
-  config.ssh.forward_x11 = true
-
-  config.vm.provider "virtualbox" do |vb, override|
-    # vb.gui = true
-    vb.name = "maposmatic"
-    vb.memory = ENV.fetch("VM_MEMORY", 3072)
-    vb.cpus   = ENV.fetch("VM_CPUS", 2)
-
-    override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
-    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
-  end
-
-  config.vm.provider "hyperv" do |h, override|
-    h.memory = ENV.fetch("VM_MEMORY", 3072)
-    h.maxmemory = ENV.fetch("VM_MEMORY", 3072)
-    h.cpus = ENV.fetch("VM_CPUS", 2)
-
-    override.vm.synced_folder ".", "/vagrant/", mount_options: ["dir_mode=777"]
-    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dir_mode=777"]
-  end
-
+  # *** PLUGINS ***
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
     config.cache.synced_folder_opts = {
@@ -40,12 +14,17 @@ Vagrant.configure(2) do |config|
     }
   end
 
+  unless Vagrant.has_plugin?("vagrant-env")
+    raise 'env plugin is not installed - run "vagrant plugin install vagrant-env" first'
+  end
+  config.env.enable
+
   unless Vagrant.has_plugin?("vagrant-vbguest")
     raise 'vbguest plugin is not installed - run "vagrant plugin install vagrant-vbguest" first'
   end
 
   if Vagrant.has_plugin?("vagrant-vbguest")
-    config.vbguest.auto_update = ENV.fetch("VAGRANT_VBGUEST_AUTO_UPDATE", true)
+    config.vbguest.auto_update = bool(ENV.fetch("VAGRANT_VBGUEST_AUTO_UPDATE", true))
   end
 
   unless Vagrant.has_plugin?("vagrant-disksize")
@@ -53,12 +32,17 @@ Vagrant.configure(2) do |config|
   end
   config.disksize.size =  ENV.fetch("DISK_SIZE", "150GB")
 
-  unless Vagrant.has_plugin?("vagrant-env")
-    raise 'env plugin is not installed - run "vagrant plugin install vagrant-env" first'
-  end
-  config.env.enable
 
-  config.ssh.forward_x11=true
+  # *** CONFIG ***
+  # *** CONFIG > COMMON ***
+
+  config.vm.box = "generic/ubuntu2004"
+
+  config.vm.network "forwarded_port", guest: 80, host: 8000
+
+  config.vm.boot_timeout = 600
+  config.ssh.forward_agent = true
+  config.ssh.forward_x11 = true
 
   config.vm.provision "shell",
     env: {
@@ -81,9 +65,35 @@ Vagrant.configure(2) do |config|
       "PAPER_MIN_HEIGHT_MM": ENV.fetch("PAPER_MIN_HEIGHT_MM", 100),
       "PAPER_MAX_HEIGHT_MM": ENV.fetch("PAPER_MAX_HEIGHT_MM", 2000),
 
-      "REPLACE_DNS": ENV.fetch("REPLACE_DNS", false),
+      "REPLACE_DNS": bool(ENV.fetch("REPLACE_DNS", false)),
       "DNS": ENV.fetch("DNS", "8.8.8.8 8.8.4.4"),
     },
     path: "provision.sh"
+
+
+  # *** CONFIG > PROVIDERS ***
+  # *** CONFIG > PROVIDERS > Virtual Box ***
+
+  config.vm.provider "virtualbox" do |vb, override|
+    # vb.gui = true
+    vb.name = "maposmatic"
+    vb.memory = ENV.fetch("VM_MEMORY", 3072)
+    vb.cpus   = ENV.fetch("VM_CPUS", 2)
+
+    override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
+    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
+  end
+
+
+  # *** CONFIG > PROVIDERS > Hyper-V ***
+
+  config.vm.provider "hyperv" do |h, override|
+    h.memory = ENV.fetch("VM_MEMORY", 3072)
+    h.maxmemory = ENV.fetch("VM_MEMORY", 3072)
+    h.cpus = ENV.fetch("VM_CPUS", 2)
+
+    override.vm.synced_folder ".", "/vagrant/", mount_options: ["dir_mode=777"]
+    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dir_mode=777"]
+  end
 
 end
