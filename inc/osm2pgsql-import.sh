@@ -70,7 +70,7 @@ fi
 if test -z "$REPLICATION_TIMESTAMP"
 then
     # fallback: take timestamp from actual file contents
-    REPLICATION_TIMESTAMP=$(osmium fileinfo -e -g date.timestamp.last $OSM_EXTRACT)
+    REPLICATION_TIMESTAMP=$(osmium fileinfo -e -g data.timestamp.last $OSM_EXTRACT)
 fi
 
 sudo -u maposmatic psql gis -c "update maposmatic_admin set last_update='$REPLICATION_TIMESTAMP'"
