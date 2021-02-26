@@ -40,7 +40,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "forwarded_port", guest: 80, host: ENV.fetch("HOST_PORT", 8000)
 
-  config.vm.boot_timeout = 600
+  config.vm.boot_timeout = ENV.fetch("VM_BOOT_TIMEOUT", 600)
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
 
