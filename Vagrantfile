@@ -67,6 +67,7 @@ Vagrant.configure(2) do |config|
 
       "REPLACE_DNS": bool(ENV.fetch("REPLACE_DNS", false)),
       "DNS": ENV.fetch("DNS", "8.8.8.8 8.8.4.4"),
+      "GROW_FS": bool(ENV.fetch("GROW_FS", true))
     },
     path: "provision.sh"
 

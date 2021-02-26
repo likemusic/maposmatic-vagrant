@@ -20,7 +20,11 @@ fi
 FILEDIR=/vagrant/files
 INCDIR=/vagrant/inc
 
+if ${GROW_FS:-false}
+then
 . $INCDIR/resize-part-and-fs.sh
+fi
+
 
 if ${REPLACE_DNS:-false}
 then
