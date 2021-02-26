@@ -50,7 +50,7 @@ Vagrant.configure(2) do |config|
       "GIT_AUTHOR_EMAIL": ENV['GIT_AUTHOR_EMAIL'],
 
       "MAPOSMATIC_FORK_URL": ENV.fetch("MAPOSMATIC_FORK_URL", "https://github.com/hholzgra/maposmatic"),
-      "MAPOSMATIC_FORK_GIT": ENV.fetch("MAPOSMATIC_FORK_URL", "https://github.com/hholzgra/maposmatic.git"),
+      "MAPOSMATIC_FORK_GIT": ENV.fetch("MAPOSMATIC_FORK_GIT", "https://github.com/hholzgra/maposmatic.git"),
       "MAPOSMATIC_FORK_BRANCH": ENV.fetch("MAPOSMATIC_FORK_BRANCH", nil),
 
       "OCITYSMAP_FORK_URL": ENV.fetch("OCITYSMAP_FORK_URL", "https://githib.com/hholzgra/ocitysmap"),

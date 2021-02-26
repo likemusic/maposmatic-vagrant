@@ -9,9 +9,9 @@ cd /home/maposmatic
 
 if [[ -z "${MAPOSMATIC_FORK_BRANCH}" ]];
   then
-    git clone --quiet ${MAPOSMATIC_FORK_GIT}
+    git clone --quiet ${MAPOSMATIC_FORK_GIT:-'https://github.com/hholzgra/maposmatic.git'}
   else
-    git clone --quiet --branch ${MAPOSMATIC_FORK_BRANCH} ${MAPOSMATIC_FORK_GIT}
+    git clone --quiet --branch ${MAPOSMATIC_FORK_BRANCH} ${MAPOSMATIC_FORK_GIT:-'https://github.com/hholzgra/maposmatic.git'}
 fi
 
 cd maposmatic
@@ -26,6 +26,18 @@ mkdir -p logs rendering/results media
 
 # copy config files
 cp $FILEDIR/config-files/config.py scripts/config.py
+
+BBOX_MAXIMUM_LENGTH_IN_METERS=${BBOX_MAXIMUM_LENGTH_IN_METERS:-20000}
+
+PAPER_MIN_WITH_MM=${PAPER_MIN_WITH_MM:-100}
+PAPER_MAX_WITH_MM=${PAPER_MAX_WITH_MM:-2000}
+
+PAPER_MIN_HEIGHT_MM=${PAPER_MIN_HEIGHT_MM:-100}
+PAPER_MAX_HEIGHT_MM=${PAPER_MAX_HEIGHT_MM:-2000}
+
+MAPOSMATIC_FORK_URL=${MAPOSMATIC_FORK_URL:-'https://github.com/hholzgra/maposmatic'}
+OCITYSMAP_FORK_URL=${OCITYSMAP_FORK_URL:-'https://githib.com/hholzgra/ocitysmap'}
+
 cat $FILEDIR/config-files/settings_local.py | envsubst > www/settings_local.py
 cp $FILEDIR/config-files/maposmatic.wsgi www/maposmatic.wsgi
 

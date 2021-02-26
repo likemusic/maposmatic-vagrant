@@ -178,8 +178,8 @@ FRONT_PAGE_FEED = "https://blog.osm-baustelle.de/index.php/feed/"
 # # To respect the AGPL licence proper links to source code must be
 # # displayed
 import os
-MAPOSMATIC_FORK_URL = os.getenv("MAPOSMATIC_FORK_URL")
-OCITYSMAP_FORK_URL = os.getenv("OCITYSMAP_FORK_URL")
+MAPOSMATIC_FORK_URL = '${MAPOSMATIC_FORK_URL}'
+OCITYSMAP_FORK_URL = '${OCITYSMAP_FORK_URL}'
 
 # root directory for uploaded files etc.
 MEDIA_ROOT = '/home/maposmatic/maposmatic/media'

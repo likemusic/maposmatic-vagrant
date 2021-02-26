@@ -9,9 +9,9 @@ cd /home/maposmatic
 
 if [[ -z "${OCITYSMAP_FORK_BRANCH}" ]];
   then
-    git clone --quiet ${OCITYSMAP_FORK_GIT}
+    git clone --quiet ${OCITYSMAP_FORK_GIT:-'https://github.com/hholzgra/ocitysmap.git'}
   else
-    git clone --quiet --branch ${OCITYSMAP_FORK_BRANCH} ${OCITYSMAP_FORK_GIT}
+    git clone --quiet --branch ${OCITYSMAP_FORK_BRANCH} ${OCITYSMAP_FORK_GIT:-'https://github.com/hholzgra/ocitysmap.git'}
 fi
 
 cd ocitysmap
