@@ -89,7 +89,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider "hyperv" do |h, override|
     h.memory = ENV.fetch("VM_MEMORY", 3072).to_i
-    h.maxmemory = ENV.fetch("VM_MEMORY", 3072),to_i
+    h.maxmemory = ENV.fetch("VM_MEMORY", 3072).to_i
     h.cpus = ENV.fetch("VM_CPUS", 2).to_i
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dir_mode=777"]
