@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "generic/ubuntu2004"
 
-  config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 80, host: ENV.fetch("HOST_PORT", 8000)
 
   config.vm.boot_timeout = 600
   config.ssh.forward_agent = true
