@@ -1,6 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+def bool(obj)
+  obj.to_s.downcase == "true"
+end
+
 Vagrant.configure(2) do |config|
   config.vm.box = "generic/ubuntu2004"
 
