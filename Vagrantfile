@@ -31,6 +31,10 @@ Vagrant.configure(2) do |config|
     raise 'vbguest plugin is not installed - run "vagrant plugin install vagrant-vbguest" first'
   end
 
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = ENV.fetch("VAGRANT_VBGUEST_AUTO_UPDATE", true)
+  end
+
   unless Vagrant.has_plugin?("vagrant-disksize")
     raise 'disksize plugin is not installed - run "vagrant plugin install vagrant-disksize" first'
   end
