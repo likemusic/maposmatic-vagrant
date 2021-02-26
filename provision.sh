@@ -22,7 +22,7 @@ INCDIR=/vagrant/inc
 
 . $INCDIR/resize-part-and-fs.sh
 
-if ${REPLACE_DNS}
+if ${REPLACE_DNS:-false}
 then
   . $INCDIR/replace-dns.sh
 fi
