@@ -82,7 +82,7 @@ Vagrant.configure(2) do |config|
     vb.cpus   = ENV.fetch("VM_CPUS", 2).to_i
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
-    override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
+#     override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
   end
 
 

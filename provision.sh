@@ -107,9 +107,9 @@ else
 fi
 
 # add "maposmatic" system user that will own the database and all locally installed stuff
-rm -rf /home/maposmatic/*
-mkdir -p /home/maposmatic
-useradd -b /home/maposmatic maposmatic
+#rm -rf /home/maposmatic/*
+#mkdir -p /home/maposmatic
+useradd --create-home maposmatic
 
 # installing apt, pip and npm packages
 
