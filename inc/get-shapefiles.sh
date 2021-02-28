@@ -1,6 +1,6 @@
 #! /bin/bash
-# 
-# Central download script for all shapefiles needed by 
+#
+# Central download script for all shapefiles needed by
 # the supported Mapnik Stylesheets
 
 echo
@@ -94,120 +94,114 @@ OSM_BAUSTELLE=http://www.osm-baustelle.de/downloads
 
 URLS+="$OSM_BAUSTELLE/mercator_tiffs.tar.bz2"
 
-
 #
 # download and process all shapefile archives
 #
-for url in $URLS
-do
-    cd $DOWNLOAD_DIR
-    
-    # some basic file name processing
-    archive=$(basename $url)
-    ext=${archive#*.}
-    archbase=$(basename $archive .$ext)
-    
-    echo -n "downloading $archive"
+for url in $URLS; do
+  cd $DOWNLOAD_DIR
 
-    # remove extra backup if exists
+  # some basic file name processing
+  archive=$(basename $url)
+  ext=${archive#*.}
+  archbase=$(basename $archive .$ext)
+
+  echo -n "downloading $archive"
+
+  # remove extra backup if exists
+  rm -f $archive.1
+
+  # download the file only if newer than the localy cached copy
+  if ! wget --quiet --timestamping --backups=1 --no-check-certificate $url; then
+    echo " ... wget failed"
+    continue
+  fi
+
+  file_type=$(file -bi $archive | sed -e's/;.*$//g')
+  case $file_type in
+  application/gzip) ;;
+
+  application/x-bzip2) ;;
+
+  application/x-xz) ;;
+
+  application/zip) ;;
+
+  *)
+    # download is not a known archive type, so something seems
+    # to have gone wrong and we try to roll back to the previous
+    # downloaded version
+    rm $archive
+    if test -f $archive.1; then
+      mv $archive.1 $archive
+    fi
+    echo " ... wrong file type $file_type"
+    continue
+    ;;
+  esac
+
+  # renew actual shapefile if a more recent version was downloaded (new backup exists)
+  # or process shapefile archive (from download or cache) if actual shapefile not found
+  if [ \( -f $DOWNLOAD_DIR/$archive.1 \) -o \( ! -d $SHAPEFILE_DIR/$archbase \) ]; then
+    echo -n " ... unpacking"
+
+    # again: remove the backup file if it exists
     rm -f $archive.1
 
-    # download the file only if newer than the localy cached copy
-    if ! wget --quiet --timestamping --backups=1 --no-check-certificate $url
-    then
-	echo " ... wget failed"
-	continue
-    fi
+    # change workplace
+    cd $SHAPEFILE_DIR
 
-    file_type=$(file -bi $archive | sed -e's/;.*$//g')
-    case $file_type in
-	application/gzip)
-        ;;
-	application/x-bzip2)
-        ;;
-	application/x-xz)
-        ;;
-	application/zip)
-        ;;
-	*)
-	    # download is not a known archive type, so something seems
-	    # to have gone wrong and we try to roll back to the previous
-	    # downloaded version
-	    rm $archive
-	    if test -f $archive.1
-	    then
-		mv $archive.1 $archive
-	    fi
-	    echo " ... wrong file type $file_type"
-	    continue
-	;;
-    esac
-	
-    # renew actual shapefile if a more recent version was downloaded (new backup exists)
-    # or process shapefile archive (from download or cache) if actual shapefile not found
-    if [ \( -f $DOWNLOAD_DIR/$archive.1 \) -o \( ! -d $SHAPEFILE_DIR/$archbase \) ]
-    then
-	echo -n " ... unpacking"
+    # create temporary workdir, we'll rename it on success later
+    rm -rf tmp
+    mkdir tmp
+    cd tmp
 
-        # again: remove the backup file if it exists
-        rm -f $archive.1
-
-        # change workplace
-        cd $SHAPEFILE_DIR
-
-        # create temporary workdir, we'll rename it on success later
-        rm -rf tmp
-	mkdir tmp
-        cd tmp
-
-        # unpack downloaded archive
-	if [ $ext = 'zip' ]
-        then
-            unzip -q $DOWNLOAD_DIR/$archive
-        else
-	    tar -xf $DOWNLOAD_DIR/$archive
-        fi
-
-	echo -n " ... indexing"
-	for shppath in $(find . -name '*.shp')
-	do
-	    shpfile=$(basename $shppath)
-	    shpdir=$(dirname $shppath)
-	    (
-	      cd $shpdir
-	      shapeindex --shape_files $shpfile >/dev/null 2>/dev/null
-	    )
-	done
-
-        # if there's only one object in the tmp dir now we have a 
-	# 'nice' archive with everything in a subdirectory of its
-	# own, and we just move that subdir
-        # if there's more than one object then the archive didn't
-	# have a top level subdir, everything was unpacked in tmp
-	# right away, and we rename the tmpdir
-        if [ $(ls | wc -l) -eq 1 ]
-        then
-	    base=$(ls)
-	    rm -rf ../$archbase 
-	    mv $base ../$archbase
-	    cd ..
-	    rm -rf tmp 
-        else
-            cd ..
-	    rm -rf $archbase
-	    mv tmp $archbase
-        fi
-	echo
+    # unpack downloaded archive
+    if [ $ext = 'zip' ]; then
+      unzip -q $DOWNLOAD_DIR/$archive
     else
-	echo " ... unchanged"
+      tar -xf $DOWNLOAD_DIR/$archive
     fi
+
+    echo -n " ... indexing"
+    for shppath in $(find . -name '*.shp'); do
+      shpfile=$(basename $shppath)
+      shpdir=$(dirname $shppath)
+      (
+        cd $shpdir
+        shapeindex --shape_files $shpfile >/dev/null 2>/dev/null
+      )
+    done
+
+    # if there's only one object in the tmp dir now we have a
+    # 'nice' archive with everything in a subdirectory of its
+    # own, and we just move that subdir
+    # if there's more than one object then the archive didn't
+    # have a top level subdir, everything was unpacked in tmp
+    # right away, and we rename the tmpdir
+    if [ $(ls | wc -l) -eq 1 ]; then
+      base=$(ls)
+      rm -rf ../$archbase
+      mv $base ../$archbase
+      cd ..
+      rm -rf tmp
+    else
+      cd ..
+      rm -rf $archbase
+      mv tmp $archbase
+    fi
+    echo
+  else
+    echo " ... unchanged"
+  fi
 done
 
 #
 # some files require special post processing
 #
 
-echo; echo "Post-Processing"; echo
+echo
+echo "Post-Processing"
+echo
 
 # TODO: I don't remember why, and for what style, this recoding was actually necessary for
 cd $SHAPEFILE_DIR/ne_10m_populated_places
@@ -215,10 +209,9 @@ ogr2ogr --config SHAPE_ENCODING UTF8 ne_10m_populated_places_fixed.shp ne_10m_po
 
 # some styles epect the mercator tiff files in the top level shapefile dir
 cd $SHAPEFILE_DIR
-for a in mercator_tiffs/*.tif
-do 
-    rm -f $(basename $a)
-    ln -s $a .
+for a in mercator_tiffs/*.tif; do
+  rm -f $(basename $a)
+  ln -s $a .
 done
 
 # the gmted shapefile dir is referenced by a different name than the archives basename
@@ -226,7 +219,7 @@ ln -sf gmted25 gmted
 
 #
 # Some older styles expect all shapefiles in a single directory "world_boundaries"
-# instead of having one subdir per shapefile archive. So we're going to populate 
+# instead of having one subdir per shapefile archive. So we're going to populate
 # such a directory with symlinks to the actual file
 #
 
@@ -235,26 +228,23 @@ rm -rf world_boundaries_new
 mkdir world_boundaries_new
 
 # link files from a known list of shapefile directories only
-for shpdir in world_boundaries-spherical shoreline_300 ne_10m_populated_places ne_110m_admin_0_boundary_lines_land mercator_tiffs land-polygons-split-3857 simplified-land-polygons-complete-3857 processed_p
-do
-	# for each file in there
-	for file in $shpdir/*
-	do
-		# create a symlink in the new world boundaries dir
-		# unless the same file name already exists in there
-		base=$(basename $file)
-		path=$(realpath $file)
-		ln -sf $path world_boundaries_new/$base
-	done
+for shpdir in world_boundaries-spherical shoreline_300 ne_10m_populated_places ne_110m_admin_0_boundary_lines_land mercator_tiffs land-polygons-split-3857 simplified-land-polygons-complete-3857 processed_p; do
+  # for each file in there
+  for file in $shpdir/*; do
+    # create a symlink in the new world boundaries dir
+    # unless the same file name already exists in there
+    base=$(basename $file)
+    path=$(realpath $file)
+    ln -sf $path world_boundaries_new/$base
+  done
 done
 
 # some files are referenced by an older name, so we create symlins for these, too
 cd world_boundaries_new
-for source in ne_110m_admin_0_boundary_lines_land.*
-do
-	dest=$(echo $source | sed -e's/ne_110/110/g')
-	echo ln -sf $source $dest
-	ln -sf $source $dest
+for source in ne_110m_admin_0_boundary_lines_land.*; do
+  dest=$(echo $source | sed -e's/ne_110/110/g')
+  echo ln -sf $source $dest
+  ln -sf $source $dest
 done
 cd ..
 
@@ -267,6 +257,3 @@ mv world_boundaries_new world_boundaries
 #
 
 echo "done"
-
-
-
