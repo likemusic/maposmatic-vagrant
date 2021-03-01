@@ -15,7 +15,7 @@ if [[ -z "${MAPOSMATIC_FORK_BRANCH}" ]];
 fi
 
 cd maposmatic
-git checkout --quiet site-osm-baustelle
+#git checkout --quiet site-osm-baustelle
 
 
 # install dependencies
