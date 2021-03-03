@@ -67,7 +67,11 @@ Vagrant.configure(2) do |config|
 
       "REPLACE_DNS": bool(ENV.fetch("REPLACE_DNS", false)),
       "DNS": ENV.fetch("DNS", "8.8.8.8 8.8.4.4"),
-      "GROW_FS": bool(ENV.fetch("GROW_FS", true))
+
+      "GROW_FS": bool(ENV.fetch("GROW_FS", true)),
+
+      "BIND_POSTGRESQL_DATA_DIRECTORY": bool(ENV.fetch("BIND_POSTGRESQL_DATA_DIRECTORY", false)),
+      "POSTGRESQL_DATA_DISK_SIZE": ENV.fetch("POSTGRESQL_DATA_DISK_SIZE", "6T")
     },
     path: "provision.sh"
 
@@ -82,6 +86,7 @@ Vagrant.configure(2) do |config|
     vb.cpus   = ENV.fetch("VM_CPUS", 2).to_i
 
     override.vm.synced_folder ".", "/vagrant/", mount_options: ["dmode=777"]
+    override.vm.synced_folder "disk", "/disk", mount_options: ["dmode=777", "fmode=666"]
 #     override.vm.synced_folder "maposmatic", "/home/maposmatic", mount_options: ["dmode=777"]
   end
 

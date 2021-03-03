@@ -31,6 +31,10 @@ then
   . $INCDIR/replace-dns.sh
 fi
 
+if ${BIND_POSTGRESQL_DATA_DIRECTORY:-false}
+then
+  . $INCDIR/bind-postgresql-data-directory.sh
+fi
 
 if touch /vagrant/can_write_here
 then
