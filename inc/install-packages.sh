@@ -1,6 +1,6 @@
 #----------------------------------------------------
 #
-# Install all required packages 
+# Install all required packages
 #
 #----------------------------------------------------
 
@@ -21,7 +21,7 @@ export DEBIAN_FRONTEND=noninteractive
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 
 # enable deb-src entries in apt sources list, needed for "apt build-dep"
-sed -i -e 's/^# deb-src/deb-src/g' /etc/apt/sources.list
+sed -i -e 's/^#deb-src/deb-src/g' /etc/apt/sources.list
 
 # bring apt package database up to date
 #
@@ -156,7 +156,7 @@ pip3 install --ignore-installed pycairo > /dev/null || exit 3
 
 
 banner "ruby packages"
-gem install --pre asciidoctor-pdf > /dev/null || exit 3 
+gem install --pre asciidoctor-pdf > /dev/null || exit 3
 
 
 # install extra npm packages
