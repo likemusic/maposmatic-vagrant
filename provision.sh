@@ -106,8 +106,15 @@ export LC_TIME=en_US.UTF-8
 
 # silence curl and wget progress reports
 # as these just flood the vagrant output in an unreadable way
-echo "--silent" > /root/.curlrc
-echo "quiet = on" > /root/.wgetrc
+# echo "--silent" > /root/.curlrc
+# echo "quiet = on" > /root/.wgetrc
+
+# To not freeze on network problems. For example when http://openptmap.org/f/symbols/ is not connectable.
+# Default is 20.
+echo "tries = 2" > /root/.wgetrc
+
+# Default is 2min that is too long.
+echo "connect-timeout = 10" > /root/.wgetrc
 
 # pre-seed compiler cache
 if test -d $CACHEDIR/.ccache/
