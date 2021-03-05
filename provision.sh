@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# --- INDEPENDENT FROM .pbf --- #
+
 # For some strange reason I don't understand yet Vagrant
 # seems to write "exit" to the provisioning scripts
 # stdin stream. As this may confuse tools that optionally
@@ -148,6 +150,14 @@ banner "db setup"
 banner "places db"
 . $INCDIR/places-database.sh
 
+# read SRTM 90m zone name -> area mapping table
+echo "Importing SRTM zone database"
+sudo -u maposmatic psql gis < /vagrant/files/database/db_dumps/srtm_zones.sql > /dev/null
+
+# set up countours database and table schema
+echo "create contour db"
+sudo -u maposmatic psql --quiet gis </vagrant/files/database/db_dumps/contours_schema.sql
+
 banner "db l10n"
 . $INCDIR/from-source/mapnik-german-l10n.sh
 
@@ -159,6 +169,44 @@ banner "building osm2pgsql"
 
 banner "building phyghtmap" # needed by OpenTopoMap
 . $INCDIR/from-source/phyghtmap.sh
+
+banner "renderer setup"
+. $INCDIR/ocitysmap.sh
+
+banner "locales"
+. $INCDIR/locales.sh
+
+banner "shapefiles"
+. $INCDIR/get-shapefiles.sh
+cp /vagrant/files/systemd/shapefile-update.* /etc/systemd/system
+systemctl daemon-reload
+
+
+#----------------------------------------------------
+#
+# Setting up Django fronted
+#
+#----------------------------------------------------
+
+banner "django frontend"
+
+. $INCDIR/apache-global-config.sh
+. $INCDIR/maposmatic-frontend.sh
+
+
+#----------------------------------------------------
+#
+# Setting up "Umgebungsplaene" alternative frontend
+#
+#----------------------------------------------------
+
+banner "umgebungsplaene"
+
+. $INCDIR/umgebungsplaene.sh
+
+
+
+# --- DEPENDENT FROM .pbf --- #
 
 banner "db import"
 . $INCDIR/osm2pgsql-import.sh
@@ -177,12 +225,6 @@ banner "start frontend"
 # Set up various stylesheets
 #
 #----------------------------------------------------
-
-banner "shapefiles"
-. $INCDIR/get-shapefiles.sh
-cp /vagrant/files/systemd/shapefile-update.* /etc/systemd/system
-systemctl daemon-reload
-
 mkdir /home/maposmatic/styles
 
 for style in /vagrant/inc/styles/*.sh
@@ -211,27 +253,6 @@ banner "postprocessing styles"
 # find . -name osm.xml | xargs \
 #    sed -i -e's/background-color="#......"/background-color="#FFFFFF"/g'
 
-#----------------------------------------------------
-#
-# Setting up Django fronted
-#
-#----------------------------------------------------
-
-banner "django frontend"
-
-. $INCDIR/apache-global-config.sh
-. $INCDIR/maposmatic-frontend.sh
-
-
-#----------------------------------------------------
-#
-# Setting up "Umgebungsplaene" alternative frontend
-#
-#----------------------------------------------------
-
-banner "umgebungsplaene"
-
-. $INCDIR/umgebungsplaene.sh
 
 #----------------------------------------------------
 #
