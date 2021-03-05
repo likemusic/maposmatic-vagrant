@@ -5,13 +5,21 @@
 #----------------------------------------------------
 
 # config tweaks
-# TODO how to auto-detect correct conf include dir?
-# Keep for OS some free memory to prevent killing PostgreSQL by Out-Of-Memory Killer
-let Mem_OS=100000
-let Mem_DB=$MemTotal-$Mem_OS
-let Mem_1_3=$Mem_DB/3
-let Mem_2_3=2*$Mem_DB/3
-sed -e"s/#Mem_1_3#/$Mem_1_3/g" -e"s/#Mem_2_3#/$Mem_2_3/g" </vagrant/files/config-files/postgresql-extra.conf >/etc/postgresql/12/main/conf.d/postgresql-extra.conf
+# TODO: how to auto-detect correct conf include dir?
+# Set memory config according to https://osm2pgsql.org/doc/manual.html#tuning-the-postgresql-server
+
+# Set work_mem to 50MB
+let WorkMemInMB=50
+
+# For maintenance_work_mem set 15% of shared memory.
+let MaintenanceWorkMemInPercents=15
+let MaintenanceWorkMemInMB=$MemAvailableInMB*$MaintenanceWorkMemInPercents/100
+
+# For shared_buffers set 2% of shared memory.
+let SharedBuffersInPercents=2
+let SharedBuffersInMB=$MemAvailableInMB*$SharedBuffersInPercents/100
+
+sed -e"s/#shared_buffers#/$SharedBuffersInMB/g" -e"s/#work_mem#/$WorkMemInMB/g" -e"s/#maintenance_work_mem#/$MaintenanceWorkMemInMB/g" </vagrant/files/config-files/postgresql-extra.conf >/etc/postgresql/12/main/conf.d/postgresql-extra.conf
 systemctl restart postgresql
 
 # add "gis" database users

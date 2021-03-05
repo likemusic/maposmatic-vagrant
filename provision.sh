@@ -48,8 +48,15 @@ fi
 
 mkdir -p $CACHEDIR
 
-# store memory size in KB in $MemTotal
-export $(grep MemTotal /proc/meminfo | sed -e's/kB//' -e's/ //g' -e's/:/=/')
+# Memory sharing schema: (work_mem=50MB) + ((maintenance_work_mem=15%) + (shared_buffers=1.5%) + (osm2pgsql cache=75%) + (keep for OS = 8.5%))
+
+# store available memory size in KB in $MemAvailableInKB
+let MemAvailableInKB=$(grep MemAvailable /proc/meminfo | sed -e's/kB//' -e's/ //g' -e's/MemAvailable://')
+export MemAvailableInKB=$MemAvailableInKB
+
+# store available memory size in MB in MemAvailableInMB
+let MemAvailableInMB=$MemAvailableInKB/1024
+export MemAvailableInMB=$MemAvailableInMB
 
 #----------------------------------------------------
 #

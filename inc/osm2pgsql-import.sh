@@ -22,8 +22,20 @@ then
   wget https://raw.githubusercontent.com/giggls/openstreetmap-carto-de/master/openstreetmap-carto.lua
 fi
 
-let CacheSize=$MemTotal/3072
-echo "osm2pgsql cache size: $CacheSize"
+# Calculate cache size according to recommendations in https://osm2pgsql.org/doc/manual.html#caching
+let FileSizeInB=$(stat -c "%s" $OSM_EXTRACT)
+let FileSizeInMB=$FileSizeInB/1024/1024
+
+# See memory sharing schema in `provision.sh`.
+let ByMemSizeInPercents=75
+let ByMemSizeInMB=$MemAvailableInMB*ByMemSizeInPercents/100
+
+let CacheSize=$(($FileSizeInMB<$ByMemSizeInMB ? $FileSizeInMB : $ByMemSizeInMB))
+if [ $CacheSize -eq "0" ]; then
+  let CacheSize=1;
+fi
+
+echo "osm2pgsql cache size: $CacheSize MB"
 
 # import data
 sudo --user=maposmatic osm2pgsql \
