@@ -162,11 +162,8 @@ python3 $INCDIR/data-bounds.py $OSM_EXTRACT
 banner "DEM setup"
 . $INCDIR/elevation-data.sh
 
-banner "renderer setup"
-. $INCDIR/ocitysmap.sh
-
-banner "locales"
-. $INCDIR/locales.sh
+banner "start frontend"
+. $INCDIR/maposmatic-frontend-after-import.sh
 
 #----------------------------------------------------
 #
