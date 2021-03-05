@@ -113,10 +113,10 @@ export LC_TIME=en_US.UTF-8
 
 # To not freeze on network problems. For example when http://openptmap.org/f/symbols/ is not connectable.
 # Default is 20.
-echo "tries = 2" > /root/.wgetrc
+echo "tries = 2" > ~/.wgetrc
 
 # Default is 2min that is too long.
-echo "connect-timeout = 10" > /root/.wgetrc
+echo "connect-timeout = 10" >> ~/.wgetrc
 
 # pre-seed compiler cache
 if test -d $CACHEDIR/.ccache/
