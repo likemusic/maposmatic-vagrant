@@ -22,6 +22,7 @@ echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select tr
 
 # enable deb-src entries in apt sources list, needed for "apt build-dep"
 sed -i -e 's/^#deb-src/deb-src/g' /etc/apt/sources.list
+sed -i -e 's/^# deb-src/deb-src/g' /etc/apt/sources.list
 
 # bring apt package database up to date
 #
