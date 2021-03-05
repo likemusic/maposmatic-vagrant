@@ -121,10 +121,10 @@ apt-get install --quiet=2 --assume-yes \
     unifont-bin \
     unzip \
     wkhtmltopdf \
-    > /dev/null || exit 3
+    || exit 3
 
 # this may cause crashes on fetching OSM diffs with osmium, so lets remove it for now
-apt-get remove -y python3-apport > /dev/null
+apt-get remove -y python3-apport
 
 banner "python packages"
 pip3 install \
@@ -143,21 +143,21 @@ pip3 install \
      sqlalchemy \
      "sqlalchemy-utils==0.35" \
      utm \
-     > /dev/null || exit 3
+     || exit 3
 
 # pip repository version of django-multiupload not compatible with Django 2.1+ yet
-pip3 install -e git+https://github.com/Chive/django-multiupload.git#egg=multiupload > /dev/null || exit 3
+pip3 install -e git+https://github.com/Chive/django-multiupload.git#egg=multiupload || exit 3
 
 # we can't uninstall the Ubuntu python3-pycairo package
 # due to too many dependencies, but we need to make sure
 # that we actually use the current pip pacakge to get
 # support for PDF set_page_label() which the version
 # of pycairo that comes with Ubuntu does not have yet
-pip3 install --ignore-installed pycairo > /dev/null || exit 3
+pip3 install --ignore-installed pycairo || exit 3
 
 
 banner "ruby packages"
-gem install --pre asciidoctor-pdf > /dev/null || exit 3
+gem install --pre asciidoctor-pdf || exit 3
 
 
 # install extra npm packages
@@ -167,5 +167,4 @@ sudo apt-get install -y nodejs
 
 npm config set loglevel warn
 
-npm install -g carto > /dev/null || exit 3
-
+npm install -g carto || exit 3
