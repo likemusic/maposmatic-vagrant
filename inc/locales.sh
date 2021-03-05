@@ -1,4 +1,4 @@
 # simply generate all available locales
 
-cp /usr/share/i18n/SUPPORTED /etc/locale.gen 
-locale-gen >/dev/null
+cp /usr/share/i18n/SUPPORTED /etc/locale.gen
+locale-gen
