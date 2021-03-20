@@ -24,7 +24,7 @@ fi
 
 # Calculate cache size according to recommendations in https://osm2pgsql.org/doc/manual.html#caching
 let FileSizeInB=$(stat -c "%s" $OSM_EXTRACT)
-let FileSizeInMB=$FileSizeInB/1024/1024
+let FileSizeInMB=$FileSizeInB*2/1024/1024
 
 # See memory sharing schema in `provision.sh`.
 let ByMemSizeInPercents=75
